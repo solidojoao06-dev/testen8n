@@ -8,32 +8,79 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <h1><a href="index.html">Impressões 3D Incríveis</a></h1>
+        <div class="top-bar">
+            <div class="logo">
+                <h1><a href="index.html">Impressões 3D</a></h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="O que você procura?">
+                <button>Buscar</button>
+            </div>
+            <div class="header-icons">
+                <a href="#" title="Minha Conta">👤</a>
+                <a href="carrinho.html" title="Carrinho">🛒 (<span id="cart-count">0</span>)</a>
+            </div>
         </div>
         <nav>
-            <a href="index.html">Início</a>
-            <a href="#">Produtos</a>
-            <a href="#">Sobre</a>
-            <a href="#">Contato</a>
-            <a href="carrinho.html">Carrinho (<span id="cart-count">0</span>)</a>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Produtos ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#">Vases</a>
+                        <a href="#">Action Figures</a>
+                        <a href="#">Supports</a>
+                        <a href="#">Decoração</a>
+                    </div>
+                </li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="#">Promoções</a></li>
+            </ul>
         </nav>
     </header>
 
     <main>
-      <div class="product-detail-container" data-id="4" data-name="Produto Detalhado" data-price="99.90">
-          <div class="product-image">
-              <img src="images/produto-detalhe-placeholder.png" alt="Nome do Produto">
-          </div>
-          <div class="product-info">
-              <h2>Nome do Produto Detalhado</h2>
-              <p class="price">R$ 99,90</p>
-              <p class="description">
-                  Aqui vai uma descrição bem detalhada da impressão 3D, falando sobre o material, as dimensões, o tempo de impressão, e qualquer outra informação relevante que o cliente precise saber antes de comprar.
-              </p>
-              <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
-          </div>
-      </div>
+        <div class="product-detail-container" data-id="4" data-name="Produto Detalhado" data-price="99.90">
+            <div class="product-image">
+                <img src="images/produto-detalhe-placeholder.png" alt="Nome do Produto">
+            </div>
+            <div class="product-info">
+                <h2>Nome do Produto Detalhado</h2>
+                <p class="price">R$ 99,90</p>
+                <div class="quantity-selector">
+                    <label for="quantity">Quantidade:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1">
+                </div>
+                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
+                <div class="product-description">
+                    <h3>Descrição</h3>
+                    <p>
+                        Aqui vai uma descrição bem detalhada da impressão 3D, falando sobre o material, as dimensões, o tempo de impressão, e qualquer outra informação relevante que o cliente precise saber antes de comprar.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-tabs">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="description">Descrição Detalhada</button>
+                <button class="tab-button" data-tab="reviews">Avaliações (1)</button>
+            </div>
+            <div class="tab-content-container">
+                <div id="description" class="tab-content active">
+                    <p>Esta é a descrição detalhada do produto. Feito com material PLA de alta qualidade, este item possui dimensões de 15cm x 10cm x 8cm. O processo de impressão 3D garante um acabamento preciso e durável, ideal para decoração ou como um presente criativo. Cuidados: evitar exposição prolongada ao sol e altas temperaturas.</p>
+                </div>
+                <div id="reviews" class="tab-content">
+                    <div class="review">
+                        <h4>Maria Silva - <span class="review-date">12/09/2024</span></h4>
+                        <div class="review-stars">★★★★★</div>
+                        <p><strong>Excelente!</strong></p>
+                        <p>Produto de ótima qualidade, chegou muito rápido e bem embalado. Exatamente como na foto. Recomendo!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer>

@@ -8,15 +8,35 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <h1><a href="index.html">Impressões 3D Incríveis</a></h1>
+        <div class="top-bar">
+            <div class="logo">
+                <h1><a href="index.html">Impressões 3D</a></h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="O que você procura?">
+                <button>Buscar</button>
+            </div>
+            <div class="header-icons">
+                <a href="#" title="Minha Conta">👤</a>
+                <a href="carrinho.html" title="Carrinho">🛒 (<span id="cart-count">0</span>)</a>
+            </div>
         </div>
         <nav>
-            <a href="index.html">Início</a>
-            <a href="#">Produtos</a>
-            <a href="#">Sobre</a>
-            <a href="#">Contato</a>
-            <a href="carrinho.html">Carrinho (<span id="cart-count">0</span>)</a>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Produtos ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#">Vases</a>
+                        <a href="#">Action Figures</a>
+                        <a href="#">Supports</a>
+                        <a href="#">Decoração</a>
+                    </div>
+                </li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="#">Promoções</a></li>
+            </ul>
         </nav>
     </header>
 
@@ -26,6 +46,10 @@
             <!-- Itens do carrinho serão inseridos aqui pelo JavaScript -->
         </div>
         <div id="cart-summary">
+            <div class="coupon-container">
+                <input type="text" id="coupon-code" placeholder="Código do cupom">
+                <button id="apply-coupon-btn">Aplicar</button>
+            </div>
             <h3>Total: R$ <span id="cart-total">0.00</span></h3>
             <button id="clear-cart-btn">Limpar Carrinho</button>
             <button id="checkout-btn">Finalizar Compra</button>

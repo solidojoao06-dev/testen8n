@@ -8,15 +8,35 @@
 </head>
 <body>
     <header>
-        <div class="logo">
-            <h1><a href="index.html">Impressões 3D Incríveis</a></h1>
+        <div class="top-bar">
+            <div class="logo">
+                <h1><a href="index.html">Impressões 3D</a></h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="O que você procura?">
+                <button>Buscar</button>
+            </div>
+            <div class="header-icons">
+                <a href="#" title="Minha Conta">👤</a>
+                <a href="carrinho.html" title="Carrinho">🛒 (<span id="cart-count">0</span>)</a>
+            </div>
         </div>
         <nav>
-            <a href="index.html">Início</a>
-            <a href="#">Produtos</a>
-            <a href="#">Sobre</a>
-            <a href="#">Contato</a>
-            <a href="carrinho.html">Carrinho (<span id="cart-count">0</span>)</a>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Produtos ▾</a>
+                    <div class="dropdown-content">
+                        <a href="#">Vases</a>
+                        <a href="#">Action Figures</a>
+                        <a href="#">Supports</a>
+                        <a href="#">Decoração</a>
+                    </div>
+                </li>
+                <li><a href="#">Sobre</a></li>
+                <li><a href="#">Contato</a></li>
+                <li><a href="#">Promoções</a></li>
+            </ul>
         </nav>
     </header>
 
@@ -25,11 +45,19 @@
             <h2>Produtos em Destaque</h2>
             <div class="gallery-container">
                 <div class="product-item" data-id="1" data-name="Vaso Elegante" data-price="49.90">
+                    <div class="product-image-container">
+                        <a href="produto.html" class="product-link">
+                            <img src="images/produto1-placeholder.png" alt="Vaso Elegante">
+                        </a>
+                        <div class="sale-tag">15% OFF</div>
+                    </div>
                     <a href="produto.html" class="product-link">
-                        <img src="images/produto1-placeholder.png" alt="Vaso Elegante">
                         <h3>Vaso Elegante</h3>
                     </a>
-                    <p>R$ 49,90</p>
+                    <div class="price-container">
+                        <span class="old-price">R$ 59,90</span>
+                        <span class="new-price">R$ 49,90</span>
+                    </div>
                     <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
                 </div>
                 <div class="product-item" data-id="2" data-name="Action Figure" data-price="59.90">
