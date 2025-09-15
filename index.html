@@ -3,56 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja de Impressões 3D</title>
+    <title>Produtos - Impressões 3D</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Impressões 3D Incríveis</h1>
-        <nav>
-            <a href="index.html">Início</a>
-            <a href="#">Produtos</a>
-            <a href="#">Sobre</a>
-            <a href="#">Contato</a>
-            <a href="carrinho.html">Carrinho (<span id="cart-count">0</span>)</a>
-        </nav>
+
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo">Impressões 3D</a>
+            <nav class="main-nav">
+                <a href="#">Início</a>
+                <a href="#">Produtos</a>
+                <a href="#">Sobre</a>
+                <a href="#">Contato</a>
+            </nav>
+            <div class="header-right">
+                <a href="#" class="cart-icon">
+                    <img src="https://placehold.co/30x30/007bff/white?text=🛒" alt="Carrinho">
+                </a>
+                <button class="filter-toggle-btn">Filtrar</button>
+            </div>
+        </div>
     </header>
 
-    <main>
-        <section class="product-gallery">
-            <h2>Produtos em Destaque</h2>
-            <div class="gallery-container">
-                <div class="product-item" data-id="1" data-name="Vaso Elegante" data-price="49.90">
-                    <a href="produto.html" class="product-link">
-                        <img src="images/produto1-placeholder.png" alt="Vaso Elegante">
-                        <h3>Vaso Elegante</h3>
-                    </a>
-                    <p>R$ 49,90</p>
-                    <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
-                </div>
-                <div class="product-item" data-id="2" data-name="Action Figure" data-price="59.90">
-                    <a href="produto.html" class="product-link">
-                        <img src="images/produto2-placeholder.png" alt="Action Figure">
-                        <h3>Action Figure</h3>
-                    </a>
-                    <p>R$ 59,90</p>
-                    <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
-                </div>
-                <div class="product-item" data-id="3" data-name="Suporte para Headset" data-price="39.90">
-                    <a href="produto.html" class="product-link">
-                        <img src="images/produto3-placeholder.png" alt="Suporte para Headset">
-                        <h3>Suporte para Headset</h3>
-                    </a>
-                    <p>R$ 39,90</p>
-                    <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
-                </div>
+    <main class="main-content container">
+        <aside class="filters-sidebar">
+            <h2>Nossos Produtos</h2>
+
+            <div class="filter-group">
+                <h3>Ordenar por</h3>
+                <select class="filter-select">
+                    <option value="price-asc">Preço: Menor para Maior</option>
+                    <option value="price-desc">Preço: Maior para Menor</option>
+                    <option value="name-asc">Nome: A-Z</option>
+                    <option value="name-desc">Nome: Z-A</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <h3>Categoria</h3>
+                <label><input type="checkbox" name="category" value="decor"> Decoração</label>
+                <label><input type="checkbox" name="category" value="gadgets"> Gadgets</label>
+                <label><input type="checkbox" name="category" value="toys"> Brinquedos</label>
+                <label><input type="checkbox" name="category" value="parts"> Peças</label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Faixa de Preço</h3>
+                <label><input type="checkbox" name="price" value="0-50"> R$0 - R$50</label>
+                <label><input type="checkbox" name="price" value="51-100"> R$51 - R$100</label>
+                <label><input type="checkbox" name="price" value="101-200"> R$101 - R$200</label>
+                <label><input type="checkbox" name="price" value="200+"> Acima de R$200</label>
+            </div>
+        </aside>
+
+        <section class="product-grid">
+            <div class="product-card">
+                <img src="https://placehold.co/300x300/eee/333?text=Produto+1" alt="Produto 1" class="product-image">
+                <h3 class="product-name">Vaso Geométrico</h3>
+                <p class="product-price">R$ 49,90</p>
+                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300/eee/333?text=Produto+2" alt="Produto 2" class="product-image">
+                <h3 class="product-name">Suporte para Headphone</h3>
+                <p class="product-price">R$ 59,90</p>
+                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300/eee/333?text=Produto+3" alt="Produto 3" class="product-image">
+                <h3 class="product-name">Action Figure Articulado</h3>
+                <p class="product-price">R$ 89,90</p>
+                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300/eee/333?text=Produto+4" alt="Produto 4" class="product-image">
+                <h3 class="product-name">Organizador de Cabos</h3>
+                <p class="product-price">R$ 29,90</p>
+                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300/eee/333?text=Produto+5" alt="Produto 5" class="product-image">
+                <h3 class="product-name">Luminária de Lua</h3>
+                <p class="product-price">R$ 120,00</p>
+                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300/eee/333?text=Produto+6" alt="Produto 6" class="product-image">
+                <h3 class="product-name">Case para Raspberry Pi</h3>
+                <p class="product-price">R$ 45,00</p>
+                <button class="add-to-cart-btn">Adicionar ao Carrinho</button>
             </div>
         </section>
     </main>
-
-    <footer>
-        <p>&copy; 2024 Loja de Impressões 3D</p>
-    </footer>
 
     <script src="js/script.js"></script>
 </body>
