@@ -39,17 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("--- ENVIANDO PEDIDO COMPLETO PARA A API ---");
             console.log(JSON.stringify(orderData, null, 2));
 
-            // Futuramente, aqui viria a chamada fetch() para POST /api/orders
-            /*
+            // Enviar para o backend com fetch()
             fetch('http://localhost:5000/api/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    // Se a resposta não for OK, tenta extrair a mensagem de erro do corpo
+                    return response.json().then(err => { throw new Error(err.msg || 'Erro no servidor') });
+                }
+                return response.json();
+            })
             .then(data => {
-                if (data.error) throw new Error(data.error);
-
                 // Limpar o carrinho e redirecionar
                 localStorage.removeItem('cart');
                 alert('Compra realizada com sucesso!');
@@ -57,14 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(err => {
                 console.error("Erro ao finalizar a compra:", err);
-                alert(`Ocorreu um erro: ${err.message}`);
+                alert(`Ocorreu um erro ao finalizar a compra: ${err.message}`);
             });
-            */
-
-            // Lógica atual (simulada)
-            localStorage.removeItem('cart');
-            alert('Compra realizada com sucesso! (Simulação)');
-            window.location.href = 'obrigado.html';
         });
     }
 });

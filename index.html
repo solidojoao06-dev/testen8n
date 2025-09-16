@@ -8,7 +8,9 @@
 </head>
 <body>
     <header>
-        <h1>Tabacaria Online</h1>
+        <a href="index.html" class="logo-link">
+            <img src="https://via.placeholder.com/150x50?text=Sua+Logo" alt="Logo da Tabacaria" class="logo">
+        </a>
         <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menu">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -23,6 +25,34 @@
             </nav>
         </div>
     </header>
+
+    <section class="hero-banner">
+        <div class="slider">
+            <div class="slide active-slide" style="background-image: url('https://via.placeholder.com/1200x400?text=Promoção+1');">
+                <div class="slide-content">
+                    <h2>Promoção Imperdível</h2>
+                    <p>Descontos de até 30% em produtos selecionados.</p>
+                    <a href="#" class="add-to-cart-btn">Ver Ofertas</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x400?text=Novidades');">
+                <div class="slide-content">
+                    <h2>Novidades na Loja</h2>
+                    <p>Confira os últimos lançamentos que chegaram.</p>
+                    <a href="#" class="add-to-cart-btn">Conferir</a>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://via.placeholder.com/1200x400?text=Frete+Grátis');">
+                <div class="slide-content">
+                    <h2>Frete Grátis</h2>
+                    <p>Nas compras acima de R$ 150,00 para todo o Brasil.</p>
+                    <a href="#" class="add-to-cart-btn">Aproveitar</a>
+                </div>
+            </div>
+        </div>
+        <button class="slider-btn prev-btn">&lt;</button>
+        <button class="slider-btn next-btn">&gt;</button>
+    </section>
 
     <main class="container">
         <section class="product-gallery">
@@ -79,5 +109,6 @@
     </footer>
 
     <script src="js/script.js"></script>
+    <script src="js/slider.js"></script>
 </body>
 </html>
