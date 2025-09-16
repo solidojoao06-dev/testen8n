@@ -87,7 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (checkoutButton) {
         checkoutButton.addEventListener('click', () => {
-            alert('A funcionalidade de finalizar a compra ainda não foi implementada.');
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio. Adicione produtos antes de finalizar a compra.');
+                return;
+            }
+
+            // Simula o envio para o backend.
+            // No futuro, aqui faremos uma chamada fetch() para a nossa API.
+            console.log("--- NOVO PEDIDO ---");
+            console.log("Enviando para o backend os seguintes itens:");
+            console.log(JSON.stringify(cart, null, 2));
+
+            // Limpa o carrinho
+            cart = [];
+            saveCart();
+
+            // Redireciona para uma página de confirmação
+            alert('Compra finalizada com sucesso! Redirecionando...');
+            window.location.href = 'obrigado.html';
         });
     }
 
