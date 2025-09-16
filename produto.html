@@ -10,15 +10,14 @@
     <header>
         <h1>Tabacaria Online</h1>
         <nav>
-            <a href="index.html">Início</a>
-            <a href="#">Produtos</a>
-            <a href="#">Sobre</a>
-            <a href="#">Contato</a>
+            <a href="index.html">Home</a>
+            <a href="#" class="active">Loja</a>
             <a href="carrinho.html">Carrinho (<span id="cart-count">0</span>)</a>
+            <!-- <a href="#">Página Futura</a> -->
         </nav>
     </header>
 
-    <main>
+    <main class="container">
       <div id="product-detail" class="product-detail-container">
           <div class="product-image">
               <img id="product-image" src="" alt="">
@@ -33,7 +32,25 @@
     </main>
 
     <footer>
-        <p>&copy; 2024 Tabacaria Online</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Sobre Nós</h4>
+                <p>A melhor tabacaria da região, com produtos de alta qualidade e atendimento especializado.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Contato</h4>
+                <p>Email: contato@tabacaria.com</p>
+                <p>Telefone: (11) 99999-8888</p>
+            </div>
+            <div class="footer-section">
+                <h4>Informações</h4>
+                <p>CNPJ: 12.345.678/0001-99</p>
+                <p>Endereço: Rua Fictícia, 123</p>
+            </div>
+        </div>
+        <div id="copyright">
+            <p>&copy; 2024 Tabacaria Online&reg;. Todos os direitos reservados.</p>
+        </div>
     </footer>
 
     <script src="js/script.js"></script>
