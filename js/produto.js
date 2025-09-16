@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productDetailContainer.dataset.id = product.id;
         productDetailContainer.dataset.name = product.name;
         productDetailContainer.dataset.price = product.price;
+        productDetailContainer.dataset.image = product.image; // Adicionar imagem ao dataset
 
         // Populate the page elements
         document.getElementById('product-image').src = product.image;

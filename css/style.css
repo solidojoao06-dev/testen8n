@@ -137,21 +137,46 @@ header nav a:hover, header nav a.active {
     color: var(--cor-destaque);
 }
 
+.product-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem;
+    flex-wrap: wrap;
+}
+
 
 /* --- Botões --- */
-.add-to-cart-btn {
-    background-color: var(--cor-destaque);
-    color: var(--cor-fundo);
-    border: none;
-    padding: 0.8rem 1.5rem;
-    margin: 1rem;
+.add-to-cart-btn, .buy-now-btn {
+    flex-grow: 1;
+    border: 2px solid var(--cor-destaque);
+    padding: 0.8rem 1rem;
     border-radius: var(--raio-borda);
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
-    transition: background-color 0.3s ease;
-    align-self: flex-start;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.add-to-cart-btn {
+    background-color: var(--cor-destaque);
+    color: var(--cor-fundo);
+}
+
+.add-to-cart-btn:hover {
+    background-color: var(--cor-destaque-hover);
+    border-color: var(--cor-destaque-hover);
+}
+
+.buy-now-btn {
+    background-color: transparent;
+    color: var(--cor-destaque);
+}
+
+.buy-now-btn:hover {
+    background-color: var(--cor-destaque);
+    color: var(--cor-fundo);
 }
 
 .add-to-cart-btn:hover {

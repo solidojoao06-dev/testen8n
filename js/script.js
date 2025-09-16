@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica do Carrinho de Compras ---
     const cartCountElement = document.getElementById('cart-count');
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+    const buyNowButtons = document.querySelectorAll('.buy-now-btn');
     const cartItemsContainer = document.getElementById('cart-items-container');
     const cartTotalElement = document.getElementById('cart-total');
     const clearCartButton = document.getElementById('clear-cart-btn');
@@ -40,6 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`${product.name} foi adicionado ao carrinho!`);
     };
 
+    const buyNow = (product) => {
+        cart = []; // Limpa o carrinho principal
+        cart.push({ ...product, quantity: 1 }); // Adiciona o item atual
+        saveCart(); // Salva o carrinho no localStorage e atualiza o contador
+        window.location.href = 'checkout.html'; // Redireciona para o checkout
+    };
+
     addToCartButtons.forEach(button => {
         button.addEventListener('click', () => {
             const productElement = button.closest('.product-item, .product-detail-container');
@@ -47,9 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: productElement.dataset.id,
                 name: productElement.dataset.name,
                 price: parseFloat(productElement.dataset.price),
-                image: productElement.querySelector('img').src
+                image: productElement.dataset.image || productElement.querySelector('img').src // Usa dataset ou fallback
             };
             addToCart(product);
+        });
+    });
+
+    buyNowButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const productElement = button.closest('.product-item, .product-detail-container');
+            const product = {
+                id: productElement.dataset.id,
+                name: productElement.dataset.name,
+                price: parseFloat(productElement.dataset.price),
+                image: productElement.dataset.image || productElement.querySelector('img').src // Usa dataset ou fallback
+            };
+            buyNow(product);
         });
     });
 
