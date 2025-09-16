@@ -7,10 +7,14 @@ const Product = require('../models/Product');
 // @desc    Create a new order
 // @access  Public
 router.post('/', async (req, res) => {
-    const { cart } = req.body;
+    // Agora esperamos um objeto mais completo do frontend
+    const { cart, customer, payment } = req.body;
 
     if (!cart || cart.length === 0) {
-        return res.status(400).json({ msg: 'O carrinho está vazio' });
+        return res.status(400).json({ msg: 'O carrinho está vazio.' });
+    }
+    if (!customer) {
+        return res.status(400).json({ msg: 'Informações do cliente são obrigatórias.' });
     }
 
     try {
@@ -23,7 +27,7 @@ router.post('/', async (req, res) => {
                 return res.status(404).json({ msg: `Produto com id ${item.id} não encontrado.` });
             }
             if (product.quantity < item.quantity) {
-                return res.status(400).json({ msg: `Estoque insuficiente para ${product.name}` });
+                return res.status(400).json({ msg: `Estoque insuficiente para ${product.name}.` });
             }
 
             total += item.quantity * product.price;
@@ -35,10 +39,20 @@ router.post('/', async (req, res) => {
             });
         }
 
+        // Aqui, em uma aplicação real, você processaria o pagamento com um gateway (Stripe, etc.)
+        // e obteria um ID de transação. Estamos simulando isso.
+        const paymentDetails = {
+            method: payment.method || 'Credit Card',
+            paymentStatus: 'Paid', // Simulação de pagamento bem-sucedido
+            transactionId: `txn_${new Date().getTime()}`, // ID de transação simulado
+        };
+
         // Create and save the new order
         const newOrder = new Order({
             items: orderItems,
             total: total,
+            customerInfo: customer,
+            paymentDetails: paymentDetails,
         });
         const savedOrder = await newOrder.save();
 

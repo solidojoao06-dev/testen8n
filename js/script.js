@@ -1,4 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Lógica do Menu Responsivo ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const navContainer = document.getElementById('nav-container');
+
+    if (menuToggle && navContainer) {
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navContainer.classList.toggle('active');
+        });
+    }
+
+    // --- Lógica do Carrinho de Compras ---
     const cartCountElement = document.getElementById('cart-count');
     const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
     const cartItemsContainer = document.getElementById('cart-items-container');
@@ -91,20 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Seu carrinho está vazio. Adicione produtos antes de finalizar a compra.');
                 return;
             }
-
-            // Simula o envio para o backend.
-            // No futuro, aqui faremos uma chamada fetch() para a nossa API.
-            console.log("--- NOVO PEDIDO ---");
-            console.log("Enviando para o backend os seguintes itens:");
-            console.log(JSON.stringify(cart, null, 2));
-
-            // Limpa o carrinho
-            cart = [];
-            saveCart();
-
-            // Redireciona para uma página de confirmação
-            alert('Compra finalizada com sucesso! Redirecionando...');
-            window.location.href = 'obrigado.html';
+            // Redireciona para a página de checkout
+            window.location.href = 'checkout.html';
         });
     }
 

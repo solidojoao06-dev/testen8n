@@ -32,6 +32,19 @@ const OrderSchema = new mongoose.Schema({
         enum: ['Novo', 'Em Separação', 'Embalado', 'Enviado', 'Concluído', 'Cancelado'],
         default: 'Novo',
     },
+    customerInfo: {
+        name: { type: String, required: true },
+        email: { type: String, required: true },
+        address: { type: String, required: true },
+        city: { type: String, required: true },
+        postalCode: { type: String, required: true },
+    },
+    paymentDetails: {
+        method: { type: String, default: 'Credit Card' },
+        // In a real app, you would store a transaction ID from the payment gateway, not card details.
+        transactionId: { type: String },
+        paymentStatus: { type: String, default: 'Pending' },
+    },
     createdAt: {
         type: Date,
         default: Date.now,
