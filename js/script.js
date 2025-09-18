@@ -1,100 +1,161 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const cartCountElement = document.getElementById('cart-count');
-    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-    const cartItemsContainer = document.getElementById('cart-items-container');
-    const cartTotalElement = document.getElementById('cart-total');
-    const clearCartButton = document.getElementById('clear-cart-btn');
-    const checkoutButton = document.getElementById('checkout-btn');
+// Objeto principal da aplicação para organizar o código
+const app = {
+    cart: [],
 
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Inicializa a aplicação
+    init() {
+        this.loadCart();
+        this.addEventListeners();
+        this.updateCartCount();
+        this.renderCartPage();
+    },
 
-    const updateCartCount = () => {
-        cartCountElement.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-    };
+    // Carrega o carrinho do localStorage
+    loadCart() {
+        this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+    },
 
-    const saveCart = () => {
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-    };
+    // Salva o carrinho no localStorage e atualiza a contagem de itens
+    saveCart() {
+        localStorage.setItem('cart', JSON.stringify(this.cart));
+        this.updateCartCount();
+    },
 
-    const addToCart = (product) => {
-        const existingItem = cart.find(item => item.id === product.id);
+    // Adiciona um produto ao carrinho
+    addToCart(product) {
+        const existingItem = this.cart.find(item => item.id === product.id);
         if (existingItem) {
             existingItem.quantity++;
         } else {
-            cart.push({ ...product, quantity: 1 });
+            this.cart.push({ ...product, quantity: 1 });
         }
-        saveCart();
+        this.saveCart();
         alert(`${product.name} foi adicionado ao carrinho!`);
-    };
+    },
 
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const productElement = button.closest('.product-item, .product-detail-container');
-            const product = {
-                id: productElement.dataset.id,
-                name: productElement.dataset.name,
-                price: parseFloat(productElement.dataset.price),
-                image: productElement.querySelector('img').src
-            };
-            addToCart(product);
-        });
-    });
+    // Atualiza o contador de itens no cabeçalho
+    updateCartCount() {
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCountElement.textContent = totalItems;
+        }
+    },
 
-    const renderCartItems = () => {
+    // Renderiza os itens na página do carrinho
+    renderCartItems() {
+        const cartItemsContainer = document.getElementById('cart-items-container');
         if (!cartItemsContainer) return;
 
-        cartItemsContainer.innerHTML = '';
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p>Seu carrinho está vazio.</p>';
+        cartItemsContainer.innerHTML = ''; // Limpa o container antes de renderizar
+
+        if (this.cart.length === 0) {
+            const emptyCartMessage = document.createElement('p');
+            emptyCartMessage.textContent = 'Seu carrinho está vazio.';
+            cartItemsContainer.appendChild(emptyCartMessage);
             return;
         }
 
-        cart.forEach(item => {
-            const cartItemElement = document.createElement('div');
-            cartItemElement.classList.add('cart-item');
-            cartItemElement.innerHTML = `
-                <div class="cart-item-info">
-                    <img src="${item.image}" alt="${item.name}">
-                    <div>
-                        <h4>${item.name}</h4>
-                        <p>R$ ${item.price.toFixed(2)}</p>
-                    </div>
-                </div>
-                <div>
-                    <p>Qtd: ${item.quantity}</p>
-                </div>
-            `;
+        this.cart.forEach(item => {
+            const cartItemElement = this.createCartItemElement(item);
             cartItemsContainer.appendChild(cartItemElement);
         });
-    };
+    },
 
-    const updateCartTotal = () => {
-        if (!cartTotalElement) return;
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        cartTotalElement.textContent = total.toFixed(2);
-    };
+    // Cria o elemento HTML para um item do carrinho (mais seguro que innerHTML)
+    createCartItemElement(item) {
+        const cartItemElement = document.createElement('div');
+        cartItemElement.classList.add('cart-item');
 
-    if (clearCartButton) {
-        clearCartButton.addEventListener('click', () => {
-            cart = [];
-            saveCart();
-            renderCartItems();
-            updateCartTotal();
-            alert('O carrinho foi esvaziado.');
+        const itemInfo = document.createElement('div');
+        itemInfo.classList.add('cart-item-info');
+
+        const itemImage = document.createElement('img');
+        itemImage.src = item.image;
+        itemImage.alt = item.name;
+
+        const itemDetails = document.createElement('div');
+        const itemName = document.createElement('h4');
+        itemName.textContent = item.name;
+        const itemPrice = document.createElement('p');
+        itemPrice.textContent = `R$ ${item.price.toFixed(2)}`;
+        itemDetails.appendChild(itemName);
+        itemDetails.appendChild(itemPrice);
+
+        itemInfo.appendChild(itemImage);
+        itemInfo.appendChild(itemDetails);
+
+        const itemQuantity = document.createElement('div');
+        const quantityText = document.createElement('p');
+        quantityText.textContent = `Qtd: ${item.quantity}`;
+        itemQuantity.appendChild(quantityText);
+
+        cartItemElement.appendChild(itemInfo);
+        cartItemElement.appendChild(itemQuantity);
+
+        return cartItemElement;
+    },
+
+    // Atualiza o valor total do carrinho
+    updateCartTotal() {
+        const cartTotalElement = document.getElementById('cart-total');
+        if (cartTotalElement) {
+            const total = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalElement.textContent = total.toFixed(2);
+        }
+    },
+
+    // Limpa todos os itens do carrinho
+    clearCart() {
+        this.cart = [];
+        this.saveCart();
+        this.renderCartItems();
+        this.updateCartTotal();
+        alert('O carrinho foi esvaziado.');
+    },
+
+    // Adiciona os event listeners aos elementos da página
+    addEventListeners() {
+        // Botões "Adicionar ao Carrinho"
+        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const productElement = event.target.closest('.product-item, .product-detail-container');
+                const product = {
+                    id: productElement.dataset.id,
+                    name: productElement.dataset.name,
+                    price: parseFloat(productElement.dataset.price),
+                    image: productElement.querySelector('img').src
+                };
+                this.addToCart(product);
+            });
         });
-    }
 
-    if (checkoutButton) {
-        checkoutButton.addEventListener('click', () => {
-            alert('A funcionalidade de finalizar a compra ainda não foi implementada.');
-        });
-    }
+        // Botão "Limpar Carrinho"
+        const clearCartButton = document.getElementById('clear-cart-btn');
+        if (clearCartButton) {
+            clearCartButton.addEventListener('click', () => this.clearCart());
+        }
 
-    // Initial Load
-    updateCartCount();
-    if (window.location.pathname.endsWith('carrinho.html')) {
-        renderCartItems();
-        updateCartTotal();
+        // Botão "Finalizar Compra"
+        const checkoutButton = document.getElementById('checkout-btn');
+        if (checkoutButton) {
+            checkoutButton.addEventListener('click', () => {
+                alert('A funcionalidade de finalizar a compra ainda não foi implementada.');
+            });
+        }
+    },
+
+    // Renderiza a página do carrinho se estivermos nela
+    renderCartPage() {
+        if (window.location.pathname.endsWith('carrinho.html')) {
+            this.renderCartItems();
+            this.updateCartTotal();
+        }
     }
+};
+
+// Inicializa a aplicação quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', () => {
+    app.init();
 });
