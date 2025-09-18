@@ -114,12 +114,58 @@ const app = {
         alert('O carrinho foi esvaziado.');
     },
 
+    // Renderiza a galeria de produtos na página inicial
+    renderProductGallery() {
+        const galleryContainer = document.querySelector('.gallery-container');
+        if (!galleryContainer) return;
+
+        products.forEach(product => {
+            const productItem = this.createProductItemElement(product);
+            galleryContainer.appendChild(productItem);
+        });
+    },
+
+    // Cria o elemento HTML para um produto na galeria
+    createProductItemElement(product) {
+        const productItem = document.createElement('div');
+        productItem.classList.add('product-item');
+        productItem.dataset.id = product.id;
+        productItem.dataset.name = product.name;
+        productItem.dataset.price = product.price;
+
+        const productLink = document.createElement('a');
+        productLink.href = `produto.html?id=${product.id}`;
+        productLink.classList.add('product-link');
+
+        const productImage = document.createElement('img');
+        productImage.src = product.image;
+        productImage.alt = product.name;
+
+        const productName = document.createElement('h3');
+        productName.textContent = product.name;
+
+        productLink.appendChild(productImage);
+        productLink.appendChild(productName);
+
+        const productPrice = document.createElement('p');
+        productPrice.textContent = `R$ ${product.price.toFixed(2)}`;
+
+        const addToCartBtn = document.createElement('button');
+        addToCartBtn.classList.add('add-to-cart-btn');
+        addToCartBtn.textContent = 'Adicionar ao Carrinho';
+
+        productItem.appendChild(productLink);
+        productItem.appendChild(productPrice);
+        productItem.appendChild(addToCartBtn);
+
+        return productItem;
+    },
+
     // Adiciona os event listeners aos elementos da página
     addEventListeners() {
-        // Botões "Adicionar ao Carrinho"
-        const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
+        // Delegação de eventos para os botões "Adicionar ao Carrinho"
+        document.body.addEventListener('click', (event) => {
+            if (event.target.classList.contains('add-to-cart-btn')) {
                 const productElement = event.target.closest('.product-item, .product-detail-container');
                 const product = {
                     id: productElement.dataset.id,
@@ -128,7 +174,7 @@ const app = {
                     image: productElement.querySelector('img').src
                 };
                 this.addToCart(product);
-            });
+            }
         });
 
         // Botão "Limpar Carrinho"
@@ -146,16 +192,79 @@ const app = {
         }
     },
 
-    // Renderiza a página do carrinho se estivermos nela
-    renderCartPage() {
-        if (window.location.pathname.endsWith('carrinho.html')) {
+    // Renderiza a página do carrinho ou a galeria de produtos
+    renderPage() {
+        const path = window.location.pathname;
+        if (path.endsWith('carrinho.html')) {
             this.renderCartItems();
             this.updateCartTotal();
+        } else if (path.endsWith('produto.html')) {
+            this.renderProductDetail();
+        } else if (path.endsWith('index.html') || path === '/') {
+            this.renderProductGallery();
+        }
+    },
+
+    // Renderiza os detalhes de um produto na página de detalhes
+    renderProductDetail() {
+        const productDetailContainer = document.getElementById('product-detail');
+        if (!productDetailContainer) return;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+
+        const product = products.find(p => p.id === productId);
+
+        if (product) {
+            productDetailContainer.innerHTML = ''; // Limpa a mensagem de "carregando"
+            productDetailContainer.dataset.id = product.id;
+            productDetailContainer.dataset.name = product.name;
+            productDetailContainer.dataset.price = product.price;
+
+            const productImage = document.createElement('div');
+            productImage.classList.add('product-image');
+            const img = document.createElement('img');
+            img.src = product.image;
+            img.alt = product.name;
+            productImage.appendChild(img);
+
+            const productInfo = document.createElement('div');
+            productInfo.classList.add('product-info');
+
+            const productName = document.createElement('h2');
+            productName.textContent = product.name;
+
+            const productPrice = document.createElement('p');
+            productPrice.classList.add('price');
+            productPrice.textContent = `R$ ${product.price.toFixed(2)}`;
+
+            const productDescription = document.createElement('p');
+            productDescription.classList.add('description');
+            productDescription.textContent = product.description;
+
+            const addToCartBtn = document.createElement('button');
+            addToCartBtn.classList.add('add-to-cart-btn');
+            addToCartBtn.textContent = 'Adicionar ao Carrinho';
+
+            productInfo.appendChild(productName);
+            productInfo.appendChild(productPrice);
+            productInfo.appendChild(productDescription);
+            productInfo.appendChild(addToCartBtn);
+
+            productDetailContainer.appendChild(productImage);
+            productDetailContainer.appendChild(productInfo);
+        } else {
+            productDetailContainer.innerHTML = '<p>Produto não encontrado.</p>';
         }
     }
 };
 
 // Inicializa a aplicação quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
-    app.init();
+    // É necessário ter o array de produtos antes de inicializar
+    if (typeof products !== 'undefined') {
+        app.init();
+    } else {
+        console.error('O arquivo de produtos (products.js) não foi carregado.');
+    }
 });
