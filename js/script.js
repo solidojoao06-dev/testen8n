@@ -190,6 +190,16 @@ const app = {
                 alert('A funcionalidade de finalizar a compra ainda não foi implementada.');
             });
         }
+
+        // Botão "Aplicar Pontos"
+        const applyPointsButton = document.getElementById('apply-points-btn');
+        if (applyPointsButton) {
+            applyPointsButton.addEventListener('click', () => {
+                const pointsInput = document.getElementById('points-to-use');
+                const points = pointsInput.value;
+                alert(`${points} pontos aplicados! (Funcionalidade de UI)`);
+            });
+        }
     },
 
     // Renderiza a página do carrinho ou a galeria de produtos
@@ -267,4 +277,49 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('O arquivo de produtos (products.js) não foi carregado.');
     }
+});
+
+// Lógica do Popup Promocional
+const promoPopup = {
+    popup: document.getElementById('promo-popup'),
+    closeButton: document.querySelector('.popup-close'),
+
+    init() {
+        if (!this.popup) return;
+
+        // Se o popup já foi visto nesta sessão, não mostra de novo
+        if (sessionStorage.getItem('promoPopupSeen')) {
+            return;
+        }
+
+        // Mostra o popup após um pequeno delay
+        setTimeout(() => this.show(), 1000);
+
+        this.addEventListeners();
+    },
+
+    show() {
+        this.popup.classList.add('active');
+    },
+
+    hide() {
+        this.popup.classList.remove('active');
+        // Marca que o popup foi visto nesta sessão
+        sessionStorage.setItem('promoPopupSeen', 'true');
+    },
+
+    addEventListeners() {
+        this.closeButton.addEventListener('click', () => this.hide());
+        this.popup.addEventListener('click', (event) => {
+            // Fecha se o clique for no overlay (fundo)
+            if (event.target === this.popup) {
+                this.hide();
+            }
+        });
+    }
+};
+
+// Inicializa o popup quando o DOM estiver carregado
+document.addEventListener('DOMContentLoaded', () => {
+    promoPopup.init();
 });
