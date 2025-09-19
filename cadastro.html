@@ -7,7 +7,7 @@
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="Referrer-Policy" content="no-referrer">
-    <title>Carrinho de Compras - Loja de Impressões 3D</title>
+    <title>Cadastro - Loja de Impressões 3D</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -24,33 +24,31 @@
         </nav>
     </header>
 
-    <main class="cart-container">
-        <h2>Seu Carrinho de Compras</h2>
-        <div id="cart-items-container">
-            <!-- Itens do carrinho serão inseridos aqui pelo JavaScript -->
-        </div>
-        <div id="cart-summary">
-            <div class="points-section">
-                <h4>Seus Pontos</h4>
-                <p>Você tem <strong>1.250</strong> pontos disponíveis.</p>
-                <div class="points-apply">
-                    <input type="number" id="points-to-use" placeholder="Pontos para usar">
-                    <button id="apply-points-btn">Aplicar</button>
+    <main>
+        <div class="auth-container">
+            <h2>Crie sua Conta</h2>
+            <form id="register-form" onsubmit="event.preventDefault(); alert('Funcionalidade de cadastro (UI) acionada.');">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" required>
                 </div>
-            </div>
-            <div class="cart-total-section">
-                <h3>Total: R$ <span id="cart-total">0.00</span></h3>
-                <button id="clear-cart-btn">Limpar Carrinho</button>
-                <button id="checkout-btn">Finalizar Compra</button>
-            </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="auth-btn">Cadastrar</button>
+            </form>
+            <p class="auth-switch">Já tem uma conta? <a href="login.html">Faça login</a></p>
         </div>
     </main>
 
     <footer>
         <p>&copy; 2024 Loja de Impressões 3D</p>
     </footer>
-
-    <script src="js/script.js"></script>
 
     <!-- Estrutura do Popup Promocional -->
     <div id="promo-popup" class="popup-overlay">
@@ -59,5 +57,7 @@
             <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='600'%20height='300'%3E%3Crect%20width='100%25'%20height='100%25'%20fill='%23e9ecef'/%3E%3Ctext%20x='50%25'%20y='50%25'%20font-family='Arial'%20font-size='24'%20fill='%23495057'%20dominant-baseline='middle'%20text-anchor='middle'%3EBanner%20da%20Promoção%20Aqui%3C/text%3E%3C/svg%3E" alt="Promoção">
         </div>
     </div>
+
+    <script src="js/script.js"></script>
 </body>
 </html>

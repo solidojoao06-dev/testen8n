@@ -1,3 +1,49 @@
+// "Banco de Dados" de Produtos
+const products = [
+    {
+        id: 1,
+        name: "Vaso Elegante",
+        price: 49.90,
+        image: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='250'%20height='250'%3E%3Crect%20width='100%25'%20height='100%25'%20fill='%23cccccc'/%3E%3C/svg%3E",
+        description: "Um vaso elegante impresso em 3D, perfeito para decorar qualquer ambiente. Feito com material PLA de alta qualidade."
+    },
+    {
+        id: 2,
+        name: "Action Figure",
+        price: 59.90,
+        image: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='250'%20height='250'%3E%3Crect%20width='100%25'%20height='100%25'%20fill='%23cccccc'/%3E%3C/svg%3E",
+        description: "Uma action figure detalhada, impressa com precisão para colecionadores. Material resistente e acabamento de primeira."
+    },
+    {
+        id: 3,
+        name: "Suporte para Headset",
+        price: 39.90,
+        image: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='250'%20height='250'%3E%3Crect%20width='100%25'%20height='100%25'%20fill='%23cccccc'/%3E%3C/svg%3E",
+        description: "Mantenha seu setup organizado com este suporte para headset. Design moderno e funcional."
+    },
+    {
+        id: 4,
+        name: "Organizador de Mesa",
+        price: 34.90,
+        image: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='250'%20height='250'%3E%3Crect%20width='100%25'%20height='100%25'%20fill='%23cccccc'/%3E%3C/svg%3E",
+        description: "Um organizador de mesa prático para canetas, clips e outros itens pequenos. Otimize seu espaço de trabalho."
+    },
+    {
+        id: 5,
+        name: "Chaveiro Personalizado",
+        price: 19.90,
+        image: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='250'%20height='250'%3E%3Crect%20width='100%25'%20height='100%25'%20fill='%23cccccc'/%3E%3C/svg%3E",
+        description: "Chaveiro personalizado com seu nome ou logo. Um ótimo presente ou brinde."
+    },
+    {
+        id: 6,
+        name: "Luminária de Lua",
+        price: 89.90,
+        image: "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='250'%20height='250'%3E%3Crect%20width='100%25'%20height='100%25'%20fill='%23cccccc'/%3E%3C/svg%3E",
+        description: "Uma linda luminária em formato de lua, criando um ambiente aconchegante e relaxante. Perfeita para quartos."
+    }
+];
+
 // Objeto principal da aplicação para organizar o código
 const app = {
     cart: [],
@@ -7,7 +53,7 @@ const app = {
         this.loadCart();
         this.addEventListeners();
         this.updateCartCount();
-        this.renderCartPage();
+        this.renderPage();
     },
 
     // Carrega o carrinho do localStorage
@@ -23,14 +69,23 @@ const app = {
 
     // Adiciona um produto ao carrinho
     addToCart(product) {
-        const existingItem = this.cart.find(item => item.id === product.id);
+        const productData = products.find(p => p.id == product.id);
+        if (!productData) return;
+
+        const existingItem = this.cart.find(item => item.id === productData.id);
         if (existingItem) {
             existingItem.quantity++;
         } else {
-            this.cart.push({ ...product, quantity: 1 });
+            this.cart.push({
+                id: productData.id,
+                name: productData.name,
+                price: productData.price,
+                image: productData.image,
+                quantity: 1
+            });
         }
         this.saveCart();
-        alert(`${product.name} foi adicionado ao carrinho!`);
+        alert(`${productData.name} foi adicionado ao carrinho!`);
     },
 
     // Atualiza o contador de itens no cabeçalho
@@ -47,7 +102,7 @@ const app = {
         const cartItemsContainer = document.getElementById('cart-items-container');
         if (!cartItemsContainer) return;
 
-        cartItemsContainer.innerHTML = ''; // Limpa o container antes de renderizar
+        cartItemsContainer.innerHTML = '';
 
         if (this.cart.length === 0) {
             const emptyCartMessage = document.createElement('p');
@@ -60,9 +115,10 @@ const app = {
             const cartItemElement = this.createCartItemElement(item);
             cartItemsContainer.appendChild(cartItemElement);
         });
+        this.updateCartTotal();
     },
 
-    // Cria o elemento HTML para um item do carrinho (mais seguro que innerHTML)
+    // Cria o elemento HTML para um item do carrinho
     createCartItemElement(item) {
         const cartItemElement = document.createElement('div');
         cartItemElement.classList.add('cart-item');
@@ -110,8 +166,6 @@ const app = {
         this.cart = [];
         this.saveCart();
         this.renderCartItems();
-        this.updateCartTotal();
-        alert('O carrinho foi esvaziado.');
     },
 
     // Renderiza a galeria de produtos na página inicial
@@ -120,18 +174,16 @@ const app = {
         if (!galleryContainer) return;
 
         products.forEach(product => {
-            const productItem = this.createProductItemElement(product);
+            const productItem = this.createProductItemElementForGallery(product);
             galleryContainer.appendChild(productItem);
         });
     },
 
     // Cria o elemento HTML para um produto na galeria
-    createProductItemElement(product) {
+    createProductItemElementForGallery(product) {
         const productItem = document.createElement('div');
         productItem.classList.add('product-item');
         productItem.dataset.id = product.id;
-        productItem.dataset.name = product.name;
-        productItem.dataset.price = product.price;
 
         const productLink = document.createElement('a');
         productLink.href = `produto.html?id=${product.id}`;
@@ -163,27 +215,23 @@ const app = {
 
     // Adiciona os event listeners aos elementos da página
     addEventListeners() {
-        // Delegação de eventos para os botões "Adicionar ao Carrinho"
         document.body.addEventListener('click', (event) => {
             if (event.target.classList.contains('add-to-cart-btn')) {
-                const productElement = event.target.closest('.product-item, .product-detail-container');
-                const product = {
-                    id: productElement.dataset.id,
-                    name: productElement.dataset.name,
-                    price: parseFloat(productElement.dataset.price),
-                    image: productElement.querySelector('img').src
-                };
-                this.addToCart(product);
+                const productElement = event.target.closest('[data-id]');
+                if (productElement) {
+                    const product = {
+                        id: productElement.dataset.id,
+                    };
+                    this.addToCart(product);
+                }
             }
         });
 
-        // Botão "Limpar Carrinho"
         const clearCartButton = document.getElementById('clear-cart-btn');
         if (clearCartButton) {
             clearCartButton.addEventListener('click', () => this.clearCart());
         }
 
-        // Botão "Finalizar Compra"
         const checkoutButton = document.getElementById('checkout-btn');
         if (checkoutButton) {
             checkoutButton.addEventListener('click', () => {
@@ -191,7 +239,6 @@ const app = {
             });
         }
 
-        // Botão "Aplicar Pontos"
         const applyPointsButton = document.getElementById('apply-points-btn');
         if (applyPointsButton) {
             applyPointsButton.addEventListener('click', () => {
@@ -202,84 +249,72 @@ const app = {
         }
     },
 
-    // Renderiza a página do carrinho ou a galeria de produtos
+    // Renderiza a página correta
     renderPage() {
         const path = window.location.pathname;
         if (path.endsWith('carrinho.html')) {
             this.renderCartItems();
-            this.updateCartTotal();
         } else if (path.endsWith('produto.html')) {
             this.renderProductDetail();
-        } else if (path.endsWith('index.html') || path === '/') {
+        } else if (path.endsWith('login.html') || path.endsWith('cadastro.html') || path.endsWith('conta.html')) {
+            // Nenhuma renderização específica necessária para estas páginas
+        } else {
             this.renderProductGallery();
         }
     },
 
-    // Renderiza os detalhes de um produto na página de detalhes
+    // Renderiza os detalhes de um produto
     renderProductDetail() {
-        const productDetailContainer = document.getElementById('product-detail');
-        if (!productDetailContainer) return;
+        const container = document.getElementById('product-detail');
+        if (!container) return;
 
         const urlParams = new URLSearchParams(window.location.search);
         const productId = parseInt(urlParams.get('id'));
-
         const product = products.find(p => p.id === productId);
 
         if (product) {
-            productDetailContainer.innerHTML = ''; // Limpa a mensagem de "carregando"
-            productDetailContainer.dataset.id = product.id;
-            productDetailContainer.dataset.name = product.name;
-            productDetailContainer.dataset.price = product.price;
+            container.innerHTML = '';
+            container.dataset.id = product.id;
 
-            const productImage = document.createElement('div');
-            productImage.classList.add('product-image');
+            const imageDiv = document.createElement('div');
+            imageDiv.classList.add('product-image');
             const img = document.createElement('img');
             img.src = product.image;
             img.alt = product.name;
-            productImage.appendChild(img);
+            imageDiv.appendChild(img);
 
-            const productInfo = document.createElement('div');
-            productInfo.classList.add('product-info');
+            const infoDiv = document.createElement('div');
+            infoDiv.classList.add('product-info');
 
-            const productName = document.createElement('h2');
-            productName.textContent = product.name;
+            const name = document.createElement('h2');
+            name.textContent = product.name;
 
-            const productPrice = document.createElement('p');
-            productPrice.classList.add('price');
-            productPrice.textContent = `R$ ${product.price.toFixed(2)}`;
+            const price = document.createElement('p');
+            price.classList.add('price');
+            price.textContent = `R$ ${product.price.toFixed(2)}`;
 
-            const productDescription = document.createElement('p');
-            productDescription.classList.add('description');
-            productDescription.textContent = product.description;
+            const description = document.createElement('p');
+            description.classList.add('description');
+            description.textContent = product.description;
 
-            const addToCartBtn = document.createElement('button');
-            addToCartBtn.classList.add('add-to-cart-btn');
-            addToCartBtn.textContent = 'Adicionar ao Carrinho';
+            const button = document.createElement('button');
+            button.classList.add('add-to-cart-btn');
+            button.textContent = 'Adicionar ao Carrinho';
 
-            productInfo.appendChild(productName);
-            productInfo.appendChild(productPrice);
-            productInfo.appendChild(productDescription);
-            productInfo.appendChild(addToCartBtn);
+            infoDiv.appendChild(name);
+            infoDiv.appendChild(price);
+            infoDiv.appendChild(description);
+            infoDiv.appendChild(button);
 
-            productDetailContainer.appendChild(productImage);
-            productDetailContainer.appendChild(productInfo);
+            container.appendChild(imageDiv);
+            container.appendChild(infoDiv);
         } else {
-            productDetailContainer.innerHTML = '<p>Produto não encontrado.</p>';
+            container.innerHTML = '<p>Produto não encontrado.</p>';
         }
     }
 };
 
-// Inicializa a aplicação quando o DOM estiver carregado
-document.addEventListener('DOMContentLoaded', () => {
-    // É necessário ter o array de produtos antes de inicializar
-    if (typeof products !== 'undefined') {
-        app.init();
-    } else {
-        console.error('O arquivo de produtos (products.js) não foi carregado.');
-    }
-});
-
-// Lógica do Popup Promocional
+// Objeto para o Popup Promocional
 const promoPopup = {
     popup: document.getElementById('promo-popup'),
     closeButton: document.querySelector('.popup-close'),
@@ -287,12 +322,10 @@ const promoPopup = {
     init() {
         if (!this.popup) return;
 
-        // Se o popup já foi visto nesta sessão, não mostra de novo
         if (sessionStorage.getItem('promoPopupSeen')) {
             return;
         }
 
-        // Mostra o popup após um pequeno delay
         setTimeout(() => this.show(), 1000);
 
         this.addEventListeners();
@@ -304,14 +337,14 @@ const promoPopup = {
 
     hide() {
         this.popup.classList.remove('active');
-        // Marca que o popup foi visto nesta sessão
         sessionStorage.setItem('promoPopupSeen', 'true');
     },
 
     addEventListeners() {
-        this.closeButton.addEventListener('click', () => this.hide());
+        if(this.closeButton) {
+            this.closeButton.addEventListener('click', () => this.hide());
+        }
         this.popup.addEventListener('click', (event) => {
-            // Fecha se o clique for no overlay (fundo)
             if (event.target === this.popup) {
                 this.hide();
             }
@@ -319,7 +352,8 @@ const promoPopup = {
     }
 };
 
-// Inicializa o popup quando o DOM estiver carregado
+// Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
+    app.init();
     promoPopup.init();
 });
